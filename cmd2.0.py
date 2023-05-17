@@ -1,9 +1,18 @@
 import math
 import os
+from os.path import exists as file_exists
+import shutil
 
 def mkdir(*name):
     dirname = ' '.join(name)
     os.makedirs(dirname)
+def rmdir(*name):
+    path = ' '.join(name)
+    shutil.rmtree(path)
+def delete(*name):
+    path = ' '.join(name)
+    print(path)
+    os.remove(path)
 def dir(path = None):
     if path == "":
         cwd = os.getcwd()
@@ -18,18 +27,30 @@ def echo(*text):
     print(' '.join(text))
 def cd(path):
     os.chdir(path)
+def run(path):
+    os.system(path)
 def exit(*args):
     quit()
 
 
-functions = {'cd': cd, 'echo': echo, 'dir': dir, 'mkdir': mkdir, 'pi': pi, 'exit': exit}  # The available functions.  
+functions = {'del': delete, 'rmdir': rmdir, '': run, 'cd': cd, 'echo': echo, 'dir': dir, 'mkdir': mkdir, 'pi': pi, 'exit': exit}  # The available functions.  
 
-print('''cmd2 [Version 1.0 BETA 1]
+print('''cmd2 [Version 1.0 BETA 2]
 © 2023 jpb''')
 while True:
     cwd = os.getcwd()
     command, *arguments = input(cwd + "> ").strip().split(' ')  # Take the user's input and split on spaces.
-    if command not in functions:
-        print("Couldn't find command", command)
+    isExist = file_exists(command)
+    if isExist == True:
+        run(command)
     else:
-        functions[command](*arguments)
+        run("C:\\Windows\\" + command)
+        isExist2 = file_exists("C:\\Windows\\" + command)
+        if isExist2 == False:
+            run("C:\\Windows\\System32\\" + command)
+            isExist3 = file_exists("C:\\Windows\\System32\\" + command)
+            if isExist3 == False:
+                if command not in functions:
+                    print("Couldn't find command", command)
+                else:
+                    functions[command](*arguments)
